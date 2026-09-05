@@ -1,3 +1,5 @@
+from tracker import parse_input
+
 
 def startUp():
   print("\n\t\t********** Personal Finance Tracker **********\t\n")
@@ -15,25 +17,20 @@ def startUp():
 
 def main():
   startUp()
-  while True:
-    user_ip = input(">>> ").lower().split(" ")[0]
 
-    match user_ip:
-      case "add":
-        print("Add")
-      case "view_catagory":
-        print("view_catagory")
-      case "total":
-        print("total")
-      case "average_by_catagory":
-        print("averag_by_catagory")
-      case "monthly_total":
-        print("monthly_total")
-      case "exit":
-        break
-      case _:
-        print("Invalid command")
+  while True:
+    user_ip = input(">>> ").lower().split(" ")
+
+    command = parse_input(user_ip)
+
+    print(command)
+
+    if command is False:
+      break
 
 
 if __name__ == "__main__":
   main()
+
+
+
