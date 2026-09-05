@@ -2,7 +2,7 @@ from datetime import datetime
 
 transactions:dict[str,list[dict[str,str|int]]] = {}
 
-def validateDate(date: str):
+def validate_date(date: str):
   try:
     if date != datetime.strptime(date,"%Y-%m-%d").strftime("%Y-%m-%d"):
       raise ValueError
@@ -10,7 +10,7 @@ def validateDate(date: str):
   except ValueError:
     return False
 
-def printCategory(category:str, categoryExists:list[dict[str, str | int]]):
+def print_category(category:str, categoryExists:list[dict[str, str | int]]):
   print("\nCategory:", category)
   print()
   print("Date        Amount    Description")
@@ -25,7 +25,9 @@ def printCategory(category:str, categoryExists:list[dict[str, str | int]]):
           item.get("description")
       )
 
-def totalExpense():
+def total_expenses():
+  """Return dict with category totals"""
+
   total_amount = 0
   category_transactions = transactions.values()
 
@@ -36,3 +38,36 @@ def totalExpense():
         total_amount += transaction_amount
 
   return total_amount
+
+def add_transaction(amount:str, category:str, date:str, description:str):
+  """Add expense to tracker"""
+  categoryExists = transactions.get(category)
+
+  if categoryExists is None:
+    transactions.update({category:[{"date":date,"amount":int(amount),"description": description}]})
+  else:
+    categoryExists.append({
+      "date": date,
+      "amount": int(amount),
+      "description": description
+    })
+
+  return True
+
+def average_by_category():
+  category_totals: list[dict[str,float]] = []
+
+  for category in transactions:
+    category_total = 0
+    count = 0
+
+    for transaction in transactions[category]:
+      amount = transaction.get("amount")
+
+      if isinstance(amount,int):
+        category_total += amount
+        count += 1
+
+    category_totals.append({category: category_total/count})
+
+  return category_totals

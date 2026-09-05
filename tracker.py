@@ -1,4 +1,11 @@
-from utils import printCategory, totalExpense, transactions, validateDate
+from utils import (
+  add_transaction,
+  average_by_category,
+  print_category,
+  total_expenses,
+  transactions,
+  validate_date,
+)
 
 
 def parse_input(user_ip: list[str]):
@@ -19,25 +26,15 @@ def parse_input(user_ip: list[str]):
         return "Category should be string"
 
       date = user_ip[3]
-      if validateDate(date) is False:
+      if validate_date(date) is False:
         return "Date is invalid"
 
       description = user_ip[4]
       if description.isdigit():
         return "Description should be string"
 
-      categoryExists = transactions.get(category)
-
-      if categoryExists is None:
-        transactions.update({category:[{"date":date,"amount":int(amount),"description": description}]})
-      else:
-        categoryExists.append({
-          "date": date,
-          "amount": int(amount),
-          "description": description
-        })
-
-      print("Success")
+      if add_transaction(amount,category,date,description) is True:
+        print("Success")
 
     case "view_category":
 
@@ -53,26 +50,27 @@ def parse_input(user_ip: list[str]):
       if categoryExists is None:
         return "Category dosen't exists"
 
-      printCategory(category,categoryExists)
+      print_category(category,categoryExists)
 
       return categoryExists
 
     case "total":
-      print("Total Expenses: ", totalExpense())
+      print("Total Expenses: ", total_expenses())
+
     case "average_by_category":
-      print("averag_by_category")
+      print("\n Average Expense by Category:")
+
+      category_avg = average_by_category()
+
+      if category_avg is not None:
+        for item in category_avg:
+          for key, value in item.items():
+            print(key, ": ",value)
+
     case "monthly_total":
       print("monthly_total")
+
     case "exit":
       return False
     case _:
       print("Invalid command")
-
-
-def add_transaction(amount, category, date, description):
-    """Add expense to tracker"""
-    pass
-
-def get_total_by_category():
-    """Return dict with category totals"""
-    pass
