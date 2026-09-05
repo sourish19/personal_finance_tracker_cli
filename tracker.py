@@ -1,6 +1,5 @@
-from utils import validateDate
+from utils import printCategory, totalExpense, transactions, validateDate
 
-transactions:dict[str,list[dict[str,str|int]]] = {}
 
 def parse_input(user_ip: list[str]):
   """Parse user command and return components"""
@@ -30,14 +29,15 @@ def parse_input(user_ip: list[str]):
       categoryExists = transactions.get(category)
 
       if categoryExists is None:
-        transactions.update({category:[{"date":date,"amount":amount}]})
+        transactions.update({category:[{"date":date,"amount":int(amount),"description": description}]})
       else:
         categoryExists.append({
           "date": date,
-          "amount": amount
+          "amount": int(amount),
+          "description": description
         })
 
-      return "Success"
+      print("Success")
 
     case "view_category":
 
@@ -53,12 +53,12 @@ def parse_input(user_ip: list[str]):
       if categoryExists is None:
         return "Category dosen't exists"
 
-      print(categoryExists)
+      printCategory(category,categoryExists)
 
       return categoryExists
 
     case "total":
-      print("total")
+      print("Total Expenses: ", totalExpense())
     case "average_by_category":
       print("averag_by_category")
     case "monthly_total":

@@ -23,14 +23,9 @@ def main():
 
     command = parse_input(user_ip)
 
-    print(command)
-
     if command is False:
       break
 
 
 if __name__ == "__main__":
   main()
-
-
-
