@@ -1,6 +1,7 @@
 from utils import (
   add_transaction,
   average_by_category,
+  monthly_total,
   print_category,
   total_expenses,
   transactions,
@@ -62,13 +63,18 @@ def parse_input(user_ip: list[str]):
 
       category_avg = average_by_category()
 
-      if category_avg is not None:
-        for item in category_avg:
-          for key, value in item.items():
-            print(key, ": ",value)
+      for item in category_avg:
+        for key, value in item.items():
+          print(key, ": ",value)
 
     case "monthly_total":
-      print("monthly_total")
+      if len(user_ip) < 2:
+        return "Provide proper format monthly_total YYYY-MM"
+
+      date = user_ip[1]
+
+      print("\n Monthly Total: ", date)
+      print("\n Total Expense: $", monthly_total(date) )
 
     case "exit":
       return False

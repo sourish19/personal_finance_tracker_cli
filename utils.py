@@ -71,3 +71,19 @@ def average_by_category():
     category_totals.append({category: category_total/count})
 
   return category_totals
+
+def monthly_total(date: str):
+    total_amount = 0
+    for category_name in transactions:
+        for transaction in transactions[category_name]:
+            transaction_date = transaction.get("date")
+            transaction_amount = transaction.get("amount")
+
+            if isinstance(transaction_date, str) and isinstance(transaction_amount, int):
+                transaction_month = datetime.strptime(
+                    transaction_date, "%Y-%m-%d"
+                ).strftime("%Y-%m")
+
+                if date == transaction_month:
+                    total_amount += transaction_amount
+    return total_amount
